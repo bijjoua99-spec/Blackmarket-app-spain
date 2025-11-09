@@ -93,6 +93,7 @@ function HackingParticles({ count = 48 }) {
 }
 
 export default function Market({ apiBase, token, userId, onLogout, userData }){
+  // ...existing code...
   // Estado para desplegable inventario en mercado entre usuarios
   const [showUserMarketInventory, setShowUserMarketInventory] = useState(false);
   // Mercado entre usuarios
@@ -136,12 +137,24 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
     const invItem = inventory.find(it => it.item_id === sellToUserSelected.id);
     if (!invItem || invItem.cantidad < sellToUserAmount) {
       addToast('Error', `No tienes suficiente cantidad de ${sellToUserSelected.name} en tu inventario para vender (${sellToUserAmount} solicitado, ${invItem ? invItem.cantidad : 0} disponible).`, 'error');
-      return;
-    }
-    setSellingToUser(true);
-    try {
-      const res = await fetch(`${apiBase}/api/blackmarket/sell-to-user`, {
-        method: 'POST',
+      return (
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1a2233] to-[#05060a] text-gray-100 relative overflow-hidden">
+          <HackingParticles count={48} />
+          {/* Logo BlackMarket arriba si se desea */}
+          <img 
+            src="/assets/blackmarket.png" 
+            alt="BlackMarket" 
+            className="w-20 h-20 rounded-full shadow-lg border-4 border-gray-800 bg-gray-900 mt-8 mb-2" 
+            style={{objectFit:'cover'}}
+          />
+          {/* ...rest of the market UI... */}
+          {/* Créditos SpainRP abajo */}
+          <div className="w-full flex flex-col items-center mt-12 mb-2">
+            <img src="/assets/spainrp_navideño.png" alt="SpainRP | Español" className="w-16 h-16 object-contain rounded-full shadow border-2 border-gray-700 mb-1" />
+            <span className="text-xs text-gray-400">© SpainRP | Español</span>
+          </div>
+        </div>
+      )
         headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({
           sellerId: userId,

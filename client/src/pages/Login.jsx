@@ -209,7 +209,7 @@ export default function Login({ apiBase, onLogin }){
       <div className="w-full max-w-2xl mx-auto mt-8 mb-4 px-2 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center gap-4 mb-8 w-full">
           <img 
-            src="https://images-ext-1.discordapp.net/external/e3Z03WFaNBwdPgJtddA1agHx2xOciXFVJuUMnFubXX4/%3Fsize%3D4096/https/cdn.discordapp.com/icons/1362092933532090469/8d5856fbffbbc251152714152b2533a3.png?format=png&quality=lossless" 
+            src="/assets/blackmarket.png" 
             alt="BlackMarket" 
             className="w-24 h-24 rounded-full shadow-lg border-4 border-gray-800 bg-gray-900"
           />
@@ -251,14 +251,14 @@ export default function Login({ apiBase, onLogin }){
           </div>
         </div>
         <div className="flex flex-col items-center mt-8 mb-4 w-full">
-          <img src="https://media.discordapp.net/attachments/1361435347321487360/1437108873499775067/a_752c3fdbe8ff0b685348c5ae7c1b51de_1.png?ex=69120b6f&is=6910b9ef&hm=ced5f4f26f473271afb679ed38da6b004f6dcc98471ee78b3c184de8ced4a33f&=&format=png&quality=lossless" alt="SpainRP | Español" className="w-32 h-32 object-contain rounded-full shadow-lg border-2 border-gray-700" />
+          <img src="/assets/spainrp_navideño.png" alt="SpainRP | Español" className="w-32 h-32 object-contain rounded-full shadow-lg border-2 border-gray-700" />
           <span className="mt-2 text-xs text-gray-400">© SpainRP | Español</span>
         </div>
         {/* Creditos y contacto desplegable */}
         <div className="w-full flex flex-col items-center justify-center mt-4">
           <details className="w-full max-w-md mx-auto bg-gray-900/90 border border-gray-800 rounded-xl shadow-lg p-5 flex flex-col items-center gap-3 transition-all duration-200">
             <summary className="flex items-center gap-3 cursor-pointer outline-none text-base font-bold text-purple-400">
-              <img src="https://media.discordapp.net/attachments/1361435347321487360/1437127316567228641/spain_rp_logo-removebg.png?ex=69121c9c&is=6910cb1c&hm=c2cf7fb1178092627cfbb263b8d2028111d248c77aa2331f6b673175e93664fc&=&format=png&quality=lossless" alt="BijjouPro08" className="w-10 h-10 rounded-full border-2 border-purple-500 shadow" />
+              <img src="/assets/spain_rp.png" alt="BijjouPro08" className="w-10 h-10 rounded-full border-2 border-purple-500 shadow" />
               <span>Sobre el fundador: <span className="text-white">BijjouPro08</span></span>
             </summary>
             <div className="w-full flex flex-col items-center mt-3">

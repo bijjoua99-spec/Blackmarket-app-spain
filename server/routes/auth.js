@@ -19,7 +19,7 @@ const REQUIRED_ROLE_ID = '1426964379588366429'; // BlackMarket access role
 const ADMIN_ROLE_ID = '1384340704553205760'; // BlackMarket admin role
 
 // Hardcode the redirect URI to match the client configuration
-const DISCORD_REDIRECT_URI = 'http://localhost:5173/auth/callback';
+const DISCORD_REDIRECT_URI = 'https://mercado-negro-spainrp.onrender.com/auth/callback';
 
 router.use(cookieParser());
 

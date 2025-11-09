@@ -1,15 +1,8 @@
 import { defineConfig } from 'vite'
 
-// Dev server proxy: reenvía /api al backend en localhost:5021
+// Configuración para producción: sin proxy, el frontend usará la URL completa del backend
 export default defineConfig({
   server: {
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5021',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
+    port: 5173
   }
 })

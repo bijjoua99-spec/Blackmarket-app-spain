@@ -91,4 +91,8 @@ app.get('/', (req, res) => {
   res.json({ ok: true, message: 'BlackMarket API running' });
 });
 
-app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  const host = process.env.HOST || '0.0.0.0';
+  const url = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+  console.log(`Server listening on ${url} (host: ${host}, port: ${PORT})`);
+});

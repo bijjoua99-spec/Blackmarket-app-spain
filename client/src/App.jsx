@@ -7,7 +7,7 @@ export default function App(){
   const [userId, setUserId] = useState(localStorage.getItem('bm_user'));
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('bm_user_data') || 'null'));
   // base URL for API calls; can be set via Vite env VITE_API_BASE
-  const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:3001';
+  const apiBase = import.meta.env.VITE_API_BASE || 'https://server-blackmarket.onrender.com/';
 
   useEffect(()=>{
     setToken(localStorage.getItem('bm_token'));
