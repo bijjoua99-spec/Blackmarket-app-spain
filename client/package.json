@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && npm run postbuild",
-    "postbuild": "copy public\\static.json dist\\static.json",
+  "postbuild": "cp public/static.json dist/static.json",
     "preview": "vite preview"
   },
   "dependencies": {
