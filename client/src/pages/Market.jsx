@@ -93,7 +93,6 @@ function HackingParticles({ count = 48 }) {
 }
 
 export default function Market({ apiBase, token, userId, onLogout, userData }){
-  // ...existing code...
   // Estado para desplegable inventario en mercado entre usuarios
   const [showUserMarketInventory, setShowUserMarketInventory] = useState(false);
   // Mercado entre usuarios
@@ -137,24 +136,12 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
     const invItem = inventory.find(it => it.item_id === sellToUserSelected.id);
     if (!invItem || invItem.cantidad < sellToUserAmount) {
       addToast('Error', `No tienes suficiente cantidad de ${sellToUserSelected.name} en tu inventario para vender (${sellToUserAmount} solicitado, ${invItem ? invItem.cantidad : 0} disponible).`, 'error');
-      return (
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1a2233] to-[#05060a] text-gray-100 relative overflow-hidden">
-          <HackingParticles count={48} />
-          {/* Logo BlackMarket arriba si se desea */}
-          <img 
-            src="/assets/blackmarket.png" 
-            alt="BlackMarket" 
-            className="w-20 h-20 rounded-full shadow-lg border-4 border-gray-800 bg-gray-900 mt-8 mb-2" 
-            style={{objectFit:'cover'}}
-          />
-          {/* ...rest of the market UI... */}
-          {/* Créditos SpainRP abajo */}
-          <div className="w-full flex flex-col items-center mt-12 mb-2">
-            <img src="/assets/spainrp_navideño.png" alt="SpainRP | Español" className="w-16 h-16 object-contain rounded-full shadow border-2 border-gray-700 mb-1" />
-            <span className="text-xs text-gray-400">© SpainRP | Español</span>
-          </div>
-        </div>
-      )
+      return;
+    }
+    setSellingToUser(true);
+    try {
+      const res = await fetch(`${apiBase}/api/blackmarket/sell-to-user`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({
           sellerId: userId,
@@ -753,7 +740,7 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
       <div className="w-full px-2 sm:px-4 md:px-8 lg:px-12 xl:px-0 max-w-7xl mx-auto py-6">
         <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 md:gap-0">
           <div className="flex items-center gap-3">
-            <img src="https://images-ext-1.discordapp.net/external/e3Z03WFaNBwdPgJtddA1agHx2xOciXFVJuUMnFubXX4/%3Fsize%3D4096/https/cdn.discordapp.com/icons/1362092933532090469/8d5856fbffbbc251152714152b2533a3.png?format=png&quality=lossless" alt="BlackMarket" className="w-12 h-12 rounded-full shadow-md" />
+            <img src="/assets/blackmarket.png" alt="BlackMarket" className="w-12 h-12 rounded-full shadow-md" />
             <div className="flex items-center gap-4">
               <div>
                 <h1 className="text-4xl font-extrabold tracking-tight flex items-center gap-2">
@@ -1287,6 +1274,11 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
           </div>
         </div>
       )}
-    </div>
+    {/* Barra de créditos y copyright */}
+    <footer className="w-full bg-gray-950 border-t border-gray-800 py-3 px-4 flex items-center justify-center gap-3 mt-12">
+      <img src="/assets/spainrp_navideño.png" alt="SpainRP" className="w-8 h-8 rounded-full shadow border border-gray-700" />
+      <span className="text-xs text-gray-400">© {new Date().getFullYear()} SpainRP | BlackMarket. Todos los derechos reservados. Uso sujeto a <a href="/terminos" className="underline text-purple-400 hover:text-purple-300">términos y condiciones</a>.</span>
+    </footer>
+  </div>
   )
 }
