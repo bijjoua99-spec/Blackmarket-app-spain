@@ -6,9 +6,16 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Servir archivos estáticos del frontend (solo si se accede por backend)
+const clientPublic = path.join(__dirname, '..', 'client', 'public');
+if (fs.existsSync(clientPublic)) {
+  app.use('/assets', express.static(path.join(clientPublic, 'assets')));
+}
 
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
