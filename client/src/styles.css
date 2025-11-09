@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+
+/* extra spacing */
+#root { padding: 30px; }
+
+/* small responsive tweaks for cards */
+.card { padding: 16px; }
+
+/* Hacking / criminal background vibes */
+body, .min-h-screen { background-color: #05060a; color: #e6eef8; }
+.matrix-lines {
+	background-image: linear-gradient(transparent 50%, rgba(255,255,255,0.02) 50%), radial-gradient(circle at 10% 20%, rgba(255,0,0,0.03), transparent 20%);
+	background-size: 100% 8px, 200px 200px;
+}
+
+/* Hacking particles background */
+.hacking-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hacking-particle {
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(180deg, #00ffea 0%, #00ffea44 100%);
+  opacity: 0.7;
+  border-radius: 1px;
+  animation: fall 2.5s linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-60px); opacity: 0.7; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+/* Toast overrides */
+.toaster-item { border-radius: 8px; padding: 10px 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+
+/* buttons */
+.btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.04); }
+
+/* responsive tweaks */
+@media (max-width: 640px) {
+	#root { padding: 12px; }
+}

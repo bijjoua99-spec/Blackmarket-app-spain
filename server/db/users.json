@@ -1,0 +1,14 @@
+{
+  "prueba": {
+    "id": "prueba",
+    "password": "$2a$10$1V7LbgGgUldijrMPZ60g/uLpP39..9ebKkoiZJ6La0mBoiW1mzDg2",
+    "cash": 6000,
+    "bank": 11600,
+    "inventory": [
+      {
+        "item_id": "bm_remington_870",
+        "cantidad": 2
+      }
+    ]
+  }
+}
