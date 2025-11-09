@@ -93,6 +93,8 @@ function HackingParticles({ count = 48 }) {
 }
 
 export default function Market({ apiBase, token, userId, onLogout, userData }){
+  // Banner de mantenimiento Mercado entre Usuarios
+  const [showBanner, setShowBanner] = useState(true);
   // Estado para desplegable inventario en mercado entre usuarios
   const [showUserMarketInventory, setShowUserMarketInventory] = useState(false);
   // Mercado entre usuarios
@@ -735,6 +737,13 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
 
   return (
     <div className="min-h-screen w-full text-gray-100 bg-fixed bg-cover bg-center relative overflow-hidden" style={{ background: 'radial-gradient(ellipse at top left, #0f172a, #05060a 60%)' }}>
+      {showBanner && (
+        <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-center px-2 py-2 bg-yellow-900/90 border-b border-yellow-700 shadow-lg text-yellow-100 text-sm" style={{ minHeight: '48px' }}>
+          <img src="/assets/blackmarket.png" alt="BlackMarket" className="w-7 h-7 rounded-full mr-2 border border-yellow-700 shadow" />
+          <span className="flex-1 text-center">La función <span className="font-bold text-yellow-300">Mercado entre Usuarios</span> está en mantenimiento.<br className="sm:hidden"/> Fecha estimada de regreso: <span className="font-bold">10/11/2025 23:59 (hora española)</span></span>
+          <button onClick={()=>setShowBanner(false)} className="ml-3 px-2 py-1 rounded bg-yellow-800 hover:bg-yellow-700 text-xs font-bold text-yellow-200">Cerrar</button>
+        </div>
+      )}
       <HackingParticles count={64} />
       <Toasts toasts={toasts} onRemove={removeToast} />
       <div className="w-full px-2 sm:px-4 md:px-8 lg:px-12 xl:px-0 max-w-7xl mx-auto py-6">
