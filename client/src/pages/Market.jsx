@@ -795,10 +795,21 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
                 <span>Panel Admin</span>
               </button>
             )}
-            <button onClick={openUserMarket} className="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded shadow flex items-center gap-2">
-              <FaUserSecret className="w-4 h-4" />
-              <span>Mercado entre usuarios</span>
-            </button>
+            {isAdmin ? (
+              <button onClick={openUserMarket} className="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded shadow flex items-center gap-2">
+                <FaUserSecret className="w-4 h-4" />
+                <span>Mercado entre usuarios</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => addToast('Función en desarrollo', 'La función de mercado entre usuarios está temporalmente desactivada por un pequeño problema. Volverá pronto.', 'error')}
+                className="px-4 py-2 bg-gray-700 cursor-not-allowed rounded shadow flex items-center gap-2 opacity-70"
+                disabled
+              >
+                <FaUserSecret className="w-4 h-4" />
+                <span>Mercado entre usuarios</span>
+              </button>
+            )}
         {/* Modal flotante moderno para Mercado entre usuarios */}
         {userMarketOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
