@@ -14,6 +14,17 @@ export default function App(){
     setUserId(localStorage.getItem('bm_user'));
   },[]);
 
+  // Manejar rutas como /auth/callback para SPA (React Router no está presente, así que redirige a Login si no hay token)
+  useEffect(() => {
+    if (!token && window.location.pathname.startsWith('/auth/callback')) {
+      // Permitir que Login.jsx maneje el callback
+      return;
+    }
+    if (!token && window.location.pathname !== '/') {
+      window.location.href = '/';
+    }
+  }, [token]);
+
   const onLogin = ({ token, userId, username, discriminator, avatar }) => {
     localStorage.setItem('bm_token', token);
     localStorage.setItem('bm_user', userId);

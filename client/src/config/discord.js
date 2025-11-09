@@ -3,7 +3,7 @@ export const DISCORD_CONFIG = {
   guildId: "1212556680911650866", // BlackMarket server
   requiredRoleId: "1426964379588366429", // BlackMarket access role
   adminRoleId: "1384340704553205760", // BlackMarket admin role
-  redirectUri: "https://mercado-negro-spainrp.onrender.com/auth/callback", // Development URL
+  redirectUri: import.meta.env.VITE_DISCORD_REDIRECT_URI || "https://mercado-negro-spainrp.onrender.com/auth/callback",
   scope: "identify guilds",
   // Bot token is only used server-side for role verification
 };
