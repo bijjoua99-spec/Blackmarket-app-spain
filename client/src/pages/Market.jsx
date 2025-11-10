@@ -246,6 +246,9 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('Todas');
   const [selected, setSelected] = useState(null);
+  // Estado para comprobante tras compra
+  const [lastPurchased, setLastPurchased] = useState(null);
+  const [showReceiptBtn, setShowReceiptBtn] = useState(false);
   const [toasts, setToasts] = useState([]);
 
   // Remove Liberty Speed and Liberty Boost and Cuchillo ERL
@@ -392,11 +395,33 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
         }
       }
       // update local stock
-      setItems(prev => ({ ...prev, [itemId]: { ...prev[itemId], stock: Math.max(0, (prev[itemId]?.stock||0) - amount) } }));
-      addToast('Compra', `Compra de ${amount} unidades realizada correctamente`, 'ok');
-      closeBuy();
-      // Refresh inventory if it's open
-      if (inventoryOpen) fetchInventory();
+  setItems(prev => ({ ...prev, [itemId]: { ...prev[itemId], stock: Math.max(0, (prev[itemId]?.stock||0) - amount) } }));
+  addToast('Compra', `Compra de ${amount} unidades realizada correctamente`, 'ok');
+  // Guardar info para comprobante
+  setLastPurchased({ itemId, amount });
+  setShowReceiptBtn(true);
+  closeBuy();
+  // Refresh inventory if it's open
+  if (inventoryOpen) fetchInventory();
+  // Enviar comprobante de compra
+  const sendReceipt = async () => {
+    if (!lastPurchased) return;
+    try {
+      const res = await fetch(`/api/blackmarket/purchase-receipt`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify({ itemId: lastPurchased.itemId, amount: lastPurchased.amount })
+      });
+      if (res.ok) {
+        addToast('Comprobante', 'Comprobante enviado correctamente a tu MD de Discord', 'ok');
+        setShowReceiptBtn(false);
+      } else {
+        addToast('Error', 'No se pudo enviar el comprobante', 'error');
+      }
+    } catch (e) {
+      addToast('Error', e.message || 'Error al enviar comprobante', 'error');
+    }
+  };
     } catch (e) {
       console.error('[Market] purchase error', e && e.message);
       addToast('Error', e.message || 'Error en la compra', 'error');
@@ -1128,7 +1153,6 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
             <div className="w-full max-w-md bg-gray-900 border border-gray-800 p-6 rounded-lg shadow-xl">
               <h3 className="text-xl font-bold mb-2">Confirmar compra</h3>
               <p className="text-sm text-gray-400 mb-4">{selected.name} — Precio: {Number(selected.price).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</p>
-              
               <div className="mb-4">
                 <label className="block text-sm text-gray-300 mb-2">Cantidad a comprar</label>
                 <div className="flex items-center gap-2">
@@ -1145,7 +1169,6 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
                   </span>
                 </div>
               </div>
-
               <div className="mt-4 flex gap-2">
                 <button 
                   onClick={() => doPurchase(selected.id, purchaseAmount)}
@@ -1159,6 +1182,18 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
                 <button onClick={closeBuy} className="py-2 px-4 bg-gray-800 hover:bg-gray-700 rounded-md">Cancelar</button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Botón para enviar comprobante tras compra */}
+        {showReceiptBtn && lastPurchased && (
+          <div className="fixed bottom-8 right-8 z-50">
+            <button
+              onClick={sendReceipt}
+              className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg border border-blue-900 text-lg"
+            >
+              Enviar comprobante a mi MD de Discord
+            </button>
           </div>
         )}
 

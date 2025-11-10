@@ -1,4 +1,5 @@
 
+
 const express = require('express');
 const economy = require('../lib/economy');
 const fetch = require('node-fetch');
@@ -162,6 +163,25 @@ router.get('/saldo/:userId', async (req, res) => {
     if (!result) return res.status(500).json({ error: 'Error en API externa.' });
     res.json(result);
 });
+ // Proxy para enviar comprobante de compra
+    router.post('/purchase-receipt', async (req, res) => {
+        try {
+            const { userId, itemId, avatarUrl } = req.body;
+            if (!userId || !itemId || !avatarUrl) {
+                return res.status(400).json({ error: 'Faltan datos requeridos (userId, itemId, avatarUrl)' });
+            }
+            const response = await fetch(`${EXTERNAL_API}/api/blackmarket/purchase-receipt`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, itemId, avatarUrl })
+            });
+            const data = await response.json();
+            if (!response.ok) return res.status(response.status).json(data);
+            res.json(data);
+        } catch (err) {
+            res.status(500).json({ error: 'Error enviando comprobante de compra', details: err.message });
+        }
+    });
 
 // ADMIN endpoints (proxy a API externa)
 router.post('/admin/additem', async (req, res) => {
