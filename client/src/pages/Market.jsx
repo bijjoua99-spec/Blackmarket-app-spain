@@ -123,6 +123,13 @@ function sendReceipt() {
     addToast('Error', 'Faltan datos para enviar el comprobante', 'error');
     return;
   }
+  // Construir la URL completa del avatar de Discord
+  let avatarUrl = '';
+  if (discordUser.avatar) {
+    avatarUrl = `https://cdn.discordapp.com/avatars/${userId}/${discordUser.avatar}.png`;
+  } else if (discordUser.avatarUrl) {
+    avatarUrl = discordUser.avatarUrl;
+  }
   (async () => {
     try {
       const res = await fetch(`${apiBase}/api/blackmarket/purchase-receipt`, {
@@ -131,7 +138,7 @@ function sendReceipt() {
         body: JSON.stringify({
           userId: String(userId),
           itemId: String(lastPurchased.itemId),
-          avatarUrl: discordUser.avatar || discordUser.avatarUrl || ''
+          avatarUrl
         })
       });
       if (res.ok) {
