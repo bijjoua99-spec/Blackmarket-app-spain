@@ -122,7 +122,7 @@ function sendReceipt() {
   if (!lastPurchased) return;
   (async () => {
     try {
-      const res = await fetch(`/api/blackmarket/purchase-receipt`, {
+      const res = await fetch(`${apiBase}/api/blackmarket/purchase-receipt`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ itemId: lastPurchased.itemId, amount: lastPurchased.amount })
