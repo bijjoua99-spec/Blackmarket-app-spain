@@ -119,19 +119,27 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
   };
 // Enviar comprobante de compra (debe estar a nivel de componente, no dentro de doPurchase)
 function sendReceipt() {
-  if (!lastPurchased) return;
+  if (!lastPurchased || !userId || !discordUser) {
+    addToast('Error', 'Faltan datos para enviar el comprobante', 'error');
+    return;
+  }
   (async () => {
     try {
       const res = await fetch(`${apiBase}/api/blackmarket/purchase-receipt`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ itemId: lastPurchased.itemId, amount: lastPurchased.amount })
+        body: JSON.stringify({
+          userId: String(userId),
+          itemId: String(lastPurchased.itemId),
+          avatarUrl: discordUser.avatar || discordUser.avatarUrl || ''
+        })
       });
       if (res.ok) {
         addToast('Comprobante', 'Comprobante enviado correctamente a tu MD de Discord', 'ok');
         setShowReceiptBtn(false);
       } else {
-        addToast('Error', 'No se pudo enviar el comprobante', 'error');
+        const err = await res.json();
+        addToast('Error', err.error || 'No se pudo enviar el comprobante', 'error');
       }
     } catch (e) {
       addToast('Error', e.message || 'Error al enviar comprobante', 'error');
