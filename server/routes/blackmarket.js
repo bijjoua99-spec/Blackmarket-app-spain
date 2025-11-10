@@ -172,7 +172,7 @@ router.get('/saldo/:userId', async (req, res) => {
                 console.warn('[purchase-receipt] Faltan datos:', { userId, itemId, avatarUrl });
                 return res.status(400).json({ error: 'Faltan datos requeridos (userId, itemId, avatarUrl)' });
             }
-            const url = `${EXTERNAL_API}/api/blackmarket/purchase-receipt`;
+            const url = `${externalBase}/api/blackmarket/purchase-receipt`;
             console.log('[purchase-receipt] Forwarding to external API:', url);
             const response = await fetch(url, {
                 method: 'POST',
