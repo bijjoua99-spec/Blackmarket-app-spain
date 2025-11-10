@@ -404,24 +404,26 @@ export default function Market({ apiBase, token, userId, onLogout, userData }){
   // Refresh inventory if it's open
   if (inventoryOpen) fetchInventory();
   // Enviar comprobante de compra
-  const sendReceipt = async () => {
+  function sendReceipt() {
     if (!lastPurchased) return;
-    try {
-      const res = await fetch(`/api/blackmarket/purchase-receipt`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ itemId: lastPurchased.itemId, amount: lastPurchased.amount })
-      });
-      if (res.ok) {
-        addToast('Comprobante', 'Comprobante enviado correctamente a tu MD de Discord', 'ok');
-        setShowReceiptBtn(false);
-      } else {
-        addToast('Error', 'No se pudo enviar el comprobante', 'error');
+    (async () => {
+      try {
+        const res = await fetch(`/api/blackmarket/purchase-receipt`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+          body: JSON.stringify({ itemId: lastPurchased.itemId, amount: lastPurchased.amount })
+        });
+        if (res.ok) {
+          addToast('Comprobante', 'Comprobante enviado correctamente a tu MD de Discord', 'ok');
+          setShowReceiptBtn(false);
+        } else {
+          addToast('Error', 'No se pudo enviar el comprobante', 'error');
+        }
+      } catch (e) {
+        addToast('Error', e.message || 'Error al enviar comprobante', 'error');
       }
-    } catch (e) {
-      addToast('Error', e.message || 'Error al enviar comprobante', 'error');
-    }
-  };
+    })();
+  }
     } catch (e) {
       console.error('[Market] purchase error', e && e.message);
       addToast('Error', e.message || 'Error en la compra', 'error');
